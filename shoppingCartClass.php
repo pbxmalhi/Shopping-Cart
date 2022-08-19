@@ -38,8 +38,11 @@ class shopping
         $pass = $this->connect->real_escape_string($_POST['loginpass']);
         $query = "select * from signup where email = '$user' and password= '$pass'";
         $result = $this->connect->query($query);
+        $r = $result->fetch_assoc();
         if ($result->num_rows > 0) {
-            echo "Login Successfull";
+            $_SESSION['username'] = $r['fullname'];
+            $_SESSION['userid'] = $r['id'];
+            header("location:index.php");
         } else {
             echo "Login Failed";
         }
@@ -123,6 +126,39 @@ class shopping
             $p = "No Product Found";
             $data[] = $p;
             return $data;
+        }
+    }
+
+
+    public function addToCart($pid, $uid)
+    {
+        $quantity = $this->connect->real_escape_string($_REQUEST['qty']);
+        $query = "insert into cart (userid, productid, quantity) values($uid, $pid, $quantity)";
+        $result = $this->connect->query($query);
+        if ($result == true) {
+?>
+            <script>
+                alert("Record Inserted");
+            </script>
+<?php
+        } else {
+            echo "There is an error in the code";
+        }
+    }
+
+
+    public function checkoutDisplay()
+    {
+        $query = "select * from cart";
+        $result = $this->connect->query($query);
+        if ($result->num_rows > 0) {
+            $data = array();
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+            return $data;
+        } else {
+            echo "There is an error in the code";
         }
     }
 }

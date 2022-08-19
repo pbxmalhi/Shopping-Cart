@@ -1,6 +1,12 @@
+<?php session_start() ?>
 <?php
 include("shoppingCartClass.php");
 $ob = new shopping();
+if (isset($_REQUEST['addToCart'])) {
+	$pid = $_REQUEST['pid'];
+	$uid = $_REQUEST['userid'];
+	$ob->addToCart($pid, $uid);
+}
 ?>
 
 <!DOCTYPE html>
@@ -79,24 +85,37 @@ $ob = new shopping();
 										<span>Model:<?php echo $product['productname'] ?></span>
 										<p>Manufacturer:<?php echo $product['productname'] ?></p>
 									</div>
-									<div class="quantity">
-										<form>
+									<form>
+										<input type="hidden" name="pid" value="<?php echo $_GET['pid'] ?>">
+										<input type="hidden" name="userid" value="<?php echo $_SESSION['userid'] ?>">
+										<div class="quantity">
 											<table>
 												<tr>
 													<td class="qty">Enter quantity</td>
-													<td><input type="" name=""></td>
+													<td><input type="text" name="qty"></td>
 												</tr>
 											</table>
-										</form>
-										<div class="price">
-											<span>Rs.<?php echo $product['productprice'] ?></span>
+											<div class="price">
+												<span>Rs.<?php echo $product['productprice'] ?></span>
+											</div>
 										</div>
-									</div>
-									<div class="cart">
-										<input type="submit" name="" value="Add to Cart">
-									</div>
+										<div class="cart">
+											<?php
+											if (empty($_SESSION['username'])) {
+
+											?>
+												<a href="./signUp.php"><input type="button" value="Login to Buy"></a>
+											<?php
+											} else {
+											?>
+												<input type="submit" name="addToCart" value="Add to Cart">
+											<?php
+											}
+											?>
+										</div>
+									</form>
 									<div class="checkout">
-										<input type="submit" name="" value="checkout">
+										<a href="./checkout.php"><input type="button" value="checkout"></a>
 									</div>
 								</div>
 							</div>

@@ -1,3 +1,4 @@
+<?php session_start() ?>
 <?php
 include("shoppingCartClass.php");
 $ob = new shopping();

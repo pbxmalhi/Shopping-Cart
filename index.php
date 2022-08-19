@@ -1,6 +1,13 @@
+<?php session_start() ?>
 <?php
 include("shoppingCartClass.php");
 $ob = new shopping();
+?>
+<?php
+if (!empty($_GET['log'])) {
+	session_destroy();
+	header("location:index.php");
+}
 ?>
 
 <!DOCTYPE html>
